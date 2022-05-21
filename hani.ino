@@ -85,3 +85,19 @@ void event()
 { 
   i=(i+1)%99;
 }
+void init_port(void) {
+    DDRB =0b00000010;
+    PORTB=0b00000000;
+
+    DDRC =0b00000000;
+    PORTC=0b00000000;
+
+    DDRD =0b01001110;
+    PORTD=0b00000000;
+
+    MCUCR |= (1u<<PUD);
+    CLKPR = 0b10000111;
+    //CLKPR = 0b10000000;
+    WDTCSR = (0<<WDE) | (0<<WDIE);
+}
+
