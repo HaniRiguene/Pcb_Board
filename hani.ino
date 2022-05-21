@@ -108,4 +108,21 @@ void init_uart() {
     /* Set frame format: 8data, 2stop bit */
     UCSR0C = (1<<USBS0)|(3<<UCSZ00);
 }
+void USART_send( unsigned char datatosend ) {
+    while ( !( UCSR0A & (1<<UDRE0))  );    /* Wait for empty transmit buffer */
+    UDR0 = datatosend;                    /* Put data into buffer, sends the data */
+}
+void USART_putstring(char* StringPtr) { // sends the characters from the string one at a time to the USART    example: USART_putstring("Hello There.");
+    while(*StringPtr != 0x00) {            // volatile uint8_t buffer[20];
+        USART_send(*StringPtr);            // USART_putstring(buffer);
+        StringPtr++;
+    }
+}
+
+unsigned char USART_receive(void){
+    uint16_t timeout=500;
+    while( (!(UCSR0A & (1<<RXC0))) && timeout) timeout--;
+    if (timeout==0) return 0;
+    else return UDR0;
+}
 
