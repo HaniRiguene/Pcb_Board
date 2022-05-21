@@ -100,4 +100,12 @@ void init_port(void) {
     //CLKPR = 0b10000000;
     WDTCSR = (0<<WDE) | (0<<WDIE);
 }
+void init_uart() {
+    UBRR0H = (unsigned char) ((MYUBBR)>>8);
+    UBRR0L = (unsigned char) MYUBBR;
+    /*Enable receiver and transmitter and enable interrupt*/
+    UCSR0B = (1<<RXEN0) | (1<<TXEN0) | (1<<RXCIE0);
+    /* Set frame format: 8data, 2stop bit */
+    UCSR0C = (1<<USBS0)|(3<<UCSZ00);
+}
 
